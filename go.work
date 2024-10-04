@@ -1,0 +1,11 @@
+go 1.22.0
+
+use (
+	./apis/atende-positivo-api
+	./libs/errors
+    ./libs/config
+    ./libs/constants
+    ./libs/http
+    ./libs/acmarketplace
+    ./libs/entities
+)
