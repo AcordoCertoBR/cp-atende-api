@@ -1,11 +1,12 @@
 go 1.22.0
 
 use (
-	./apis/atende-positivo-api
+	./apis/atende-api
+	./libs/acmarketplace
+	./libs/auth
+	./libs/config
+	./libs/constants
+	./libs/entities
 	./libs/errors
-    ./libs/config
-    ./libs/constants
-    ./libs/http
-    ./libs/acmarketplace
-    ./libs/entities
+	./libs/http
 )

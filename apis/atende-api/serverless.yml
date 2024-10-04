@@ -1,0 +1,126 @@
+service: cp-atende-api
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-certificate-creator
+  - serverless-domain-manager
+  - serverless-plugin-resource-tagging
+  #- serverless-plugin-datadog
+
+provider:
+  name: aws
+  runtime: provided.al2
+  architecture: arm64
+  stage: ${opt:stage, 'prd'}
+  region: sa-east-1
+  versionFunctions: false
+  timeout: 30
+  memorySize: 128
+  logRetentionInDays: 14
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket.${self:provider.stage}}
+  logs:
+    restApi: true
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource: "*"
+        # TODO: integrate datadog
+        # removes lambda logging permission
+        #- Effect: Deny
+        #  Action:
+        #    - logs:CreateLogGroup
+        #    - logs:CreateLogStream
+        #    - logs:PutLogEvents
+        #  Resource:
+        #    - arn:aws:logs:sa-east-1:${aws:accountId}:log-group:/aws/lambda/:*
+
+  stackTags:
+    IsProduction: ${self:custom.IsProduction.${self:provider.stage}}
+    DataClassification: Sierra
+    ResiliencyTier: gold
+    Application: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.application}
+    BusinessUnit: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.business-unit}
+
+  tags:
+    IsProduction: ${self:custom.IsProduction.${self:provider.stage}}
+    DataClassification: Sierra
+    ResiliencyTier: gold
+    Application: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.application}
+    BusinessUnit: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.business-unit}
+
+package:
+  individually: true
+  patterns:
+    - "!./**"
+    - ./bin/**
+
+custom:
+  this: cp-atende-api-${self:provider.stage}
+  #ddEnabled:
+  #  dev: false
+  #  prd: true
+  #datadog:
+  #  enabled: ${self:custom.ddEnabled.${self:provider.stage}}
+  #  site: datadoghq.com
+  #  apiKey: ${ssm:/datadog/api-key-secret} 
+  #  enableXrayTracing: false
+  #  enableDDTracing: false
+  #  enableDDLogs: true
+  IsProduction:
+    local: "false"
+    dev: "false"
+    prd: "true"
+
+  NodeEnv:
+    dev: development
+    prd: production
+
+  Debug:
+    local: true
+    dev: true
+    prd: false
+
+  domainName: ${ssm:/atende/route53/atende-api-domain-name}
+
+  customCertificate:
+    certificateName: ${self:custom.domainName}
+    hostedZoneNames: ${self:custom.domainName}.
+
+  customDomain:
+    domainName: ${self:custom.domainName}
+    stage: ${self:provider.stage}
+    certificateName: ${self:custom.domainName}
+    createRoute53Record: true
+
+  deploymentBucket:
+    dev: cp-serverless-deployment-development
+    prd: cp-serverless-deployment-production
+
+
+  environment:
+    DEBUG: ${self:custom.Debug.${self:provider.stage}}
+    ENVIRONMENT: ${self:custom.NodeEnv.${self:provider.stage}}
+    AUTH0_JWT_SECRET: ${ssm:/atende/auth0-jwt-secret}
+
+    AC_MARKETPLACE_API_HOST: ${ssm:/atende/ac-marketplace-api-host}
+    AC_MARKETPLACE_API_KEY: ${ssm:/atende/ac-marketplace-api-key}
+
+functions:
+  cp-atende-api-get-customer:
+    name: ${self:custom.this}-get-customer
+    handler: bootstrap
+    package:
+      artifact: bin/get-customer.zip
+    tags:
+      Name: ${self:custom.this}-get-customer
+    events:
+      - http:
+          path: /customer/{document}
+          method: get
+          cors: true

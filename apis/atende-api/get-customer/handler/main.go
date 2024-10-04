@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 
+	"github.com/AcordoCertoBR/cp-atende-api/apis/atende-api/get-customer/service"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/auth"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/config"
 	httpUtils "github.com/AcordoCertoBR/cp-atende-api/libs/http"
+	"github.com/golang-jwt/jwt"
 
-	"github.com/AcordoCertoBR/cp-atende-api/apis/atende-positivo-api/get-customer/service"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
 	"github.com/aws/aws-lambda-go/events"
@@ -17,7 +19,25 @@ var ACMarketplace *acmarketplace.ACMarketplace
 var cfg *config.Config
 var httpClient *httpUtils.Http
 
+/*
+TODO:
+- Add ip whitelist
+- Integrate with auth0
+- Add slog
+- Integrate datadog
+- Integrate redline
+*/
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events.APIGatewayProxyResponse, err error) {
+	token := req.Headers["Authorization"]
+	valid, err := auth.ValidateJWT(cfg.Auth0.JwtSecret, token, jwt.SigningMethodHS256.Name)
+	if err != nil {
+		return httpUtils.UnauthorizedResponse(), nil
+	}
+
+	if !valid {
+		return httpUtils.UnauthorizedResponse(), nil
+	}
+
 	document := req.PathParameters["document"]
 	if document == "" {
 		return httpUtils.ValidationError("document is required"), nil

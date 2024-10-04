@@ -1,0 +1,73 @@
+name: "Deploy Atende API"
+
+#on:
+#  push:
+#    branches: ["main", "next"]
+#    paths:
+#      - ".github/workflows/atende-api.yml"
+#      - "apis/atende-api/**"
+#      - "libs/**"
+#      - "env_settings.yml"
+#  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: "deploy-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  Deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apis/atende-api
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Set up Go"
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.22.0
+
+      - name: "Setup node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: "Install Dependencies"
+        run: make install-dependencies
+
+      - name: "Build"
+        run: make build
+
+      - name: Configure AWS credentials (production)
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::890620372383:role/github-actions-sls
+          aws-region: sa-east-1
+
+      - name: Serverless deploy (production)
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          export PARTNER_SLUG=iq
+          make deploy STAGE=prd
+
+      - name: Configure AWS credentials (development)
+        if: ${{ github.ref == 'refs/heads/next' }}
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::765298216168:role/github-actions-sls
+          aws-region: sa-east-1
+
+      - name: Serverless deploy (development)
+        if: ${{ github.ref == 'refs/heads/next' }}
+        run: |
+          export PARTNER_SLUG=iq
+          make deploy STAGE=dev
