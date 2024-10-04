@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/acmarketplace"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/entities"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/errors"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/entities"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
 )
 
 type GetCustomerService struct {

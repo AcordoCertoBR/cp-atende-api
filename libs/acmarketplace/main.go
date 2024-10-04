@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/config"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/entities"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/errors"
-	httpUtils "github.com/AcordoCertoBR/ac-atende-positivo-api/libs/http"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/config"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/entities"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
+	httpUtils "github.com/AcordoCertoBR/cp-atende-api/libs/http"
 )
 
 type ACMarketplace struct {

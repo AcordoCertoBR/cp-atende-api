@@ -1,4 +1,4 @@
-module github.com/AcordoCertoBR/ac-atende-positivo-api/apis/atende-positivo-api
+module github.com/AcordoCertoBR/cp-atende-api/apis/atende-positivo-api
 
 go 1.22.0
 

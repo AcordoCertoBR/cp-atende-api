@@ -1,3 +1,3 @@
-module github.com/AcordoCertoBR/ac-atende-positivo-api/libs/entities
+module github.com/AcordoCertoBR/cp-atende-api/libs/entities
 
 go 1.22.0

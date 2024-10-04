@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/config"
-	httpUtils "github.com/AcordoCertoBR/ac-atende-positivo-api/libs/http"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/config"
+	httpUtils "github.com/AcordoCertoBR/cp-atende-api/libs/http"
 
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/apis/atende-positivo-api/get-customer/service"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/acmarketplace"
-	"github.com/AcordoCertoBR/ac-atende-positivo-api/libs/errors"
+	"github.com/AcordoCertoBR/cp-atende-api/apis/atende-positivo-api/get-customer/service"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )

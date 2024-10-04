@@ -1,3 +1,3 @@
-module github.com/AcordoCertoBR/ac-atende-positivo-api/libs/acmarketplace
+module github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace
 
 go 1.22.0
