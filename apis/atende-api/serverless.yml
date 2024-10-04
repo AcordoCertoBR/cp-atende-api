@@ -81,10 +81,10 @@ custom:
     dev: development
     prd: production
 
-  Debug:
-    local: true
-    dev: true
-    prd: false
+  LogLevel:
+    local: "INFO"
+    dev: "INFO"
+    prd: "INFO"
 
   domainName: ${ssm:/atende/route53/atende-api-domain-name}
 
@@ -104,7 +104,7 @@ custom:
 
 
   environment:
-    DEBUG: ${self:custom.Debug.${self:provider.stage}}
+    LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
     ENVIRONMENT: ${self:custom.NodeEnv.${self:provider.stage}}
     AUTH0_JWT_SECRET: ${ssm:/atende/auth0-jwt-secret}
 

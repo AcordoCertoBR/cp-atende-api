@@ -13,6 +13,8 @@ type Auth0 struct {
 
 type InternalConfig struct {
 	Environment string
+	LogLevel    string
+	AppName     string
 }
 
 type Config struct {
@@ -32,6 +34,8 @@ func NewConfig() *Config {
 		},
 		InternalConfig: InternalConfig{
 			Environment: os.Getenv("ENVIRONMENT"),
+			LogLevel:    os.Getenv("LOG_LEVEL"),
+			AppName:     "cp-atende-api",
 		},
 	}
 }

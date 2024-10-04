@@ -9,4 +9,5 @@ use (
 	./libs/entities
 	./libs/errors
 	./libs/http
+	./libs/logger
 )

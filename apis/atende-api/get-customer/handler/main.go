@@ -7,6 +7,7 @@ import (
 	"github.com/AcordoCertoBR/cp-atende-api/libs/auth"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/config"
 	httpUtils "github.com/AcordoCertoBR/cp-atende-api/libs/http"
+	"github.com/AcordoCertoBR/cp-atende-api/libs/logger"
 	"github.com/golang-jwt/jwt"
 
 	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
@@ -23,11 +24,12 @@ var httpClient *httpUtils.Http
 TODO:
 - Add ip whitelist
 - Integrate with auth0
-- Add slog
 - Integrate datadog
 - Integrate redline
 */
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events.APIGatewayProxyResponse, err error) {
+	logger.SetupLogger(cfg)
+
 	token := req.Headers["Authorization"]
 	valid, err := auth.ValidateJWT(cfg.Auth0.JwtSecret, token, jwt.SigningMethodHS256.Name)
 	if err != nil {
