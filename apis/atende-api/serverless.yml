@@ -89,8 +89,8 @@ custom:
   domainName: ${ssm:/atende/route53/atende-api-domain-name}
 
   deploymentBucket:
-    dev: cp-serverless-deployment-development
-    prd: cp-serverless-deployment-production
+    dev: application-serverless-deployment-development
+    prd: application-serverless-deployment-production
 
 
   environment:
