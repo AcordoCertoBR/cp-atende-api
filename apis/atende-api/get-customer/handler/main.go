@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/AcordoCertoBR/cp-atende-api/apis/atende-api/get-customer/service"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/auth"
@@ -11,7 +12,6 @@ import (
 	"github.com/golang-jwt/jwt"
 
 	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
-	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
@@ -33,15 +33,18 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 	token := req.Headers["Authorization"]
 	valid, err := auth.ValidateJWT(cfg.Auth0.JwtSecret, token, jwt.SigningMethodHS256.Name)
 	if err != nil {
+		slog.Error(err.Error())
 		return httpUtils.UnauthorizedResponse(), nil
 	}
 
 	if !valid {
+		slog.Error("Invalid token")
 		return httpUtils.UnauthorizedResponse(), nil
 	}
 
 	document := req.PathParameters["document"]
 	if document == "" {
+		slog.Error("document is required")
 		return httpUtils.ValidationError("document is required"), nil
 	}
 
@@ -49,7 +52,8 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 
 	response, err := customerSvc.GetCustomer(document)
 	if err != nil {
-		return res, errors.Wrap(err)
+		slog.Error(err.Error())
+		return httpUtils.InternalServerErrorResponse(), nil
 	}
 
 	if response.Data.User.Documento == "" {
