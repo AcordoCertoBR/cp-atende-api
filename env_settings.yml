@@ -1,3 +1,19 @@
 config:
   application: "cp-atende-api"
   business-unit: "adquire"
+  dev:
+    awsVPC:
+      securityGroupIds:
+        - sg-04dc50d2c69bd6c2b
+      subnetIds:
+        - "subnet-04439fd71cc50b679"
+        - "subnet-0b5d1ab0feabab643"
+        - "subnet-057dbc88deead906f"
+  prd:
+    awsVPC:
+      securityGroupIds:
+        - sg-073181ddfcba109a1
+      subnetIds:
+        - "subnet-046d802afc1c4cde2"
+        - "subnet-01b0ca4a349054981"
+        - "subnet-0e42d7b13a52ced58"
