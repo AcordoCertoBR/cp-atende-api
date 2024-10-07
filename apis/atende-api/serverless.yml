@@ -18,6 +18,7 @@ provider:
   timeout: 30
   memorySize: 128
   logRetentionInDays: 14
+  vpc: ${file(../../env_settings.yml):config.${self:provider.stage}.awsVPC}
   deploymentBucket:
     name: ${self:custom.deploymentBucket.${self:provider.stage}}
   logs:
