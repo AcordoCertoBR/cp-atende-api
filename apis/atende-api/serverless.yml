@@ -3,8 +3,8 @@ service: cp-atende-api
 frameworkVersion: "3"
 
 plugins:
-  - serverless-certificate-creator
-  - serverless-domain-manager
+  #- serverless-certificate-creator
+  #- serverless-domain-manager
   - serverless-plugin-resource-tagging
   #- serverless-plugin-datadog
 
@@ -87,16 +87,6 @@ custom:
     prd: "INFO"
 
   domainName: ${ssm:/atende/route53/atende-api-domain-name}
-
-  customCertificate:
-    certificateName: ${self:custom.domainName}
-    hostedZoneNames: ${self:custom.domainName}.
-
-  customDomain:
-    domainName: ${self:custom.domainName}
-    stage: ${self:provider.stage}
-    certificateName: ${self:custom.domainName}
-    createRoute53Record: true
 
   deploymentBucket:
     dev: cp-serverless-deployment-development

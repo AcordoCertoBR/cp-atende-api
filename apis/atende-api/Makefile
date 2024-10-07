@@ -14,6 +14,4 @@ clean:
 	rm -rf ./bin
 
 deploy:
-	serverless create-cert --stage $(STAGE) --verbose
-	serverless create_domain --stage $(STAGE) --verbose
 	serverless deploy --stage $(STAGE) --verbose
