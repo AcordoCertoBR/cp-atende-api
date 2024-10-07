@@ -6,6 +6,7 @@ plugins:
   #- serverless-certificate-creator
   #- serverless-domain-manager
   - serverless-plugin-resource-tagging
+  - serverless-whitelisting
   #- serverless-plugin-datadog
 
 provider:
@@ -23,6 +24,13 @@ provider:
     name: ${self:custom.deploymentBucket.${self:provider.stage}}
   logs:
     restApi: true
+  serverless-whitelisting:
+    stage: ${self:provider.stage}
+    privateStages:
+      - ${self:provider.stage}
+    netblocks:
+      - 177.139.195.176
+      - 177.8.173.155
 
   environment:
     LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
