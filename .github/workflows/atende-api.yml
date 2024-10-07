@@ -1,14 +1,14 @@
 name: "Deploy Atende API"
 
-#on:
-#  push:
-#    branches: ["main", "next"]
-#    paths:
-#      - ".github/workflows/atende-api.yml"
-#      - "apis/atende-api/**"
-#      - "libs/**"
-#      - "env_settings.yml"
-#  workflow_dispatch:
+on:
+  push:
+    branches: ["main", "next"]
+    paths:
+      - ".github/workflows/atende-api.yml"
+      - "apis/atende-api/**"
+      - "libs/**"
+      - "env_settings.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
