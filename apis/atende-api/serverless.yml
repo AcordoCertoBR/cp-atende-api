@@ -44,15 +44,15 @@ provider:
     IsProduction: ${self:custom.IsProduction.${self:provider.stage}}
     DataClassification: Sierra
     ResiliencyTier: gold
-    Application: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.application}
-    BusinessUnit: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.business-unit}
+    Application: ${file(../../env_settings.yml):config.application}
+    BusinessUnit: ${file(../../env_settings.yml):config.business-unit}
 
   tags:
     IsProduction: ${self:custom.IsProduction.${self:provider.stage}}
     DataClassification: Sierra
     ResiliencyTier: gold
-    Application: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.application}
-    BusinessUnit: ${file(../../env_settings_${env:PARTNER_SLUG}.yml):config.business-unit}
+    Application: ${file(../../env_settings.yml):config.application}
+    BusinessUnit: ${file(../../env_settings.yml):config.business-unit}
 
 package:
   individually: true
