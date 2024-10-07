@@ -23,6 +23,14 @@ provider:
   logs:
     restApi: true
 
+  environment:
+    LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
+    ENVIRONMENT: ${self:custom.NodeEnv.${self:provider.stage}}
+    AUTH0_JWT_SECRET: ${ssm:/atende/auth0-jwt-secret}
+
+    AC_MARKETPLACE_API_HOST: ${ssm:/atende/ac-marketplace-api-host}
+    AC_MARKETPLACE_API_KEY: ${ssm:/atende/ac-marketplace-api-key}
+
   iam:
     role:
       statements:
@@ -91,15 +99,6 @@ custom:
   deploymentBucket:
     dev: application-serverless-deployment-development
     prd: application-serverless-deployment-production
-
-
-  environment:
-    LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
-    ENVIRONMENT: ${self:custom.NodeEnv.${self:provider.stage}}
-    AUTH0_JWT_SECRET: ${ssm:/atende/auth0-jwt-secret}
-
-    AC_MARKETPLACE_API_HOST: ${ssm:/atende/ac-marketplace-api-host}
-    AC_MARKETPLACE_API_KEY: ${ssm:/atende/ac-marketplace-api-key}
 
 functions:
   cp-atende-api-get-customer:
