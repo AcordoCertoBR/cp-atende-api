@@ -50,7 +50,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::890620372383:role/github-actions-sls
+          role-to-assume: arn:aws:iam::765298216168:role/github-actions-sls
           aws-region: sa-east-1
 
       - name: Serverless deploy (production)
@@ -63,7 +63,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/next' }}
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::765298216168:role/github-actions-sls
+          role-to-assume: arn:aws:iam::129620803890:role/github-actions-sls
           aws-region: sa-east-1
 
       - name: Serverless deploy (development)
