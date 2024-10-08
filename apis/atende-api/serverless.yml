@@ -121,4 +121,4 @@ functions:
           cors: true
 
 resources:
-  - ${file(./serverless-gateway.yml).resources}
+  - ${file(./serverless-gateway.yml)}

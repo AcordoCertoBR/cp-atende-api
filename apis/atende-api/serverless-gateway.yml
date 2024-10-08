@@ -1,11 +1,10 @@
-resources:
-  Resources:
-    ApiGatewayGatewayUnauthorizedResponse:
-      Type: AWS::ApiGateway::GatewayResponse
-      Properties:
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        ResponseType: UNAUTHORIZED
-        ResponseTemplates:
-          application/json: '{"message": "Forbidden"}'
-        StatusCode: "403"
+Resources:
+  ApiGatewayGatewayUnauthorizedResponse:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      ResponseType: UNAUTHORIZED
+      ResponseTemplates:
+        application/json: '{"message": "Forbidden"}'
+      StatusCode: "403"
