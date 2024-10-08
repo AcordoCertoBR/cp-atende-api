@@ -6,7 +6,6 @@ plugins:
   #- serverless-certificate-creator
   #- serverless-domain-manager
   - serverless-plugin-resource-tagging
-  - serverless-whitelisting
   #- serverless-plugin-datadog
 
 provider:
@@ -24,6 +23,8 @@ provider:
     name: ${self:custom.deploymentBucket.${self:provider.stage}}
   logs:
     restApi: true
+  apiGateway:
+    resourcePolicy: ${file(../../env_settings.yml):config.resourcePolicy}
 
   environment:
     LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
@@ -72,6 +73,9 @@ package:
 
 custom:
   this: cp-atende-api-${self:provider.stage}
+  ipWhitelist: 
+    - 177.139.195.176
+    - 177.8.173.155
   #ddEnabled:
   #  dev: false
   #  prd: true
@@ -97,15 +101,6 @@ custom:
     prd: "INFO"
 
   domainName: ${ssm:/atende/route53/atende-api-domain-name}
-
-  serverless-whitelisting:
-    stage: ${self:provider.stage}
-    privateStages:
-      - dev
-      - prd
-    netblocks:
-      - 177.139.195.176
-      - 177.8.173.155
 
   deploymentBucket:
     dev: application-serverless-deployment-development

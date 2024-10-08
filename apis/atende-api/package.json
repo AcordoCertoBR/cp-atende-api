@@ -2,7 +2,6 @@
     "devDependencies": {
         "serverless-certificate-creator": "^1.6.0",
         "serverless-domain-manager": "^6.1.0",
-        "serverless-plugin-resource-tagging": "^1.2.0",
-        "serverless-whitelisting": "^0.0.6"
+        "serverless-plugin-resource-tagging": "^1.2.0"
     }
 }
