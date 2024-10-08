@@ -56,6 +56,8 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 		return httpUtils.InternalServerErrorResponse(), nil
 	}
 
+	slog.Info("document", "document", response.Data.User.Documento)
+
 	if response.Data.User.Documento == "" {
 		return httpUtils.NotFoundResponse(), nil
 	}
