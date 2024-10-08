@@ -1,6 +1,15 @@
 config:
   application: "cp-atende-api"
   business-unit: "adquire"
+  resourcePolicy:
+    - Effect: Allow
+      Principal: "*"
+      Action: execute-api:Invoke
+      Resource:
+        - execute-api:/*/*/*
+      Condition:
+        IpAddress:
+          aws:SourceIp: ${self:custom.ipWhitelist}
   dev:
     awsVPC:
       securityGroupIds:
