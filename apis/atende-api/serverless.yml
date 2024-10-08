@@ -24,13 +24,6 @@ provider:
     name: ${self:custom.deploymentBucket.${self:provider.stage}}
   logs:
     restApi: true
-  serverless-whitelisting:
-    stage: ${self:provider.stage}
-    privateStages:
-      - ${self:provider.stage}
-    netblocks:
-      - 177.139.195.176
-      - 177.8.173.155
 
   environment:
     LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
@@ -104,6 +97,15 @@ custom:
     prd: "INFO"
 
   domainName: ${ssm:/atende/route53/atende-api-domain-name}
+
+  serverless-whitelisting:
+    stage: ${self:provider.stage}
+    privateStages:
+      - ${self:provider.stage}
+    netblocks:
+      - 177.139.195.176
+      - 177.8.173.155
+
 
   deploymentBucket:
     dev: application-serverless-deployment-development
