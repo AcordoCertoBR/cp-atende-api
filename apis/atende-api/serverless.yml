@@ -119,6 +119,3 @@ functions:
           path: /customer/{document}
           method: get
           cors: true
-
-resources:
-  - ${file(./serverless-gateway.yml)}
