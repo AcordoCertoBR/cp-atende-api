@@ -101,11 +101,11 @@ custom:
   serverless-whitelisting:
     stage: ${self:provider.stage}
     privateStages:
-      - ${self:provider.stage}
+      - dev
+      - prd
     netblocks:
       - 177.139.195.176
       - 177.8.173.155
-
 
   deploymentBucket:
     dev: application-serverless-deployment-development
