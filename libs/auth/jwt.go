@@ -2,31 +2,37 @@ package auth
 
 import (
 	"encoding/base64"
+	"fmt"
 
-	"github.com/AcordoCertoBR/cp-atende-api/libs/errors"
 	"github.com/golang-jwt/jwt"
 )
 
-func ValidateJWT(jwtSecret string, receivedToken string, expectedTokenType string) (retVal bool, err error) {
-	token, err := jwt.Parse(receivedToken, func(token *jwt.Token) (interface{}, error) {
-		secretKey, err := base64.StdEncoding.DecodeString(jwtSecret)
-		if err != nil {
-			return "", errors.Wrap(err)
-		}
-		return secretKey, nil
-	})
-
+func ValidateJWT(tokenString string, publicKey string) (bool, error) {
+	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey)
 	if err != nil {
-		return retVal, errors.Wrap(err)
+		return false, fmt.Errorf("error decoding public key: %v", err)
+	}
+	// Parse the public key
+	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(decodedPublicKey))
+	if err != nil {
+		return false, fmt.Errorf("error parsing public key: %v", err)
 	}
 
-	retVal = token.Valid
+	// Parse the token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return key, nil
+	})
+	if err != nil {
+		return false, fmt.Errorf("error parsing token: %v", err)
+	}
 
-	// Token Information
-	//_, ok := token.Claims.(jwt.MapClaims)
-	//if !ok || !token.Valid {
-	//	return retVal, errors.Wrap(err)
-	//}
+	// Validate the token
+	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return true, nil
+	}
 
-	return retVal, nil
+	return false, nil
 }

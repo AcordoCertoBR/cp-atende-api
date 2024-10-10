@@ -29,7 +29,7 @@ provider:
   environment:
     LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
     ENVIRONMENT: ${self:custom.NodeEnv.${self:provider.stage}}
-    AUTH0_JWT_SECRET: ${ssm:/atende/auth0-jwt-secret}
+    AUTH0_PUBLIC_CERTIFICATE: ${ssm:/atende/auth0-public-certificate}
 
     AC_MARKETPLACE_API_HOST: ${ssm:/atende/ac-marketplace-api-host}
     AC_MARKETPLACE_API_KEY: ${ssm:/atende/ac-marketplace-api-key}

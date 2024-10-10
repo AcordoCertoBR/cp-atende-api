@@ -8,7 +8,7 @@ type ACMarketplaceApiConfig struct {
 }
 
 type Auth0 struct {
-	JwtSecret string
+	PublicCertificate string
 }
 
 type InternalConfig struct {
@@ -30,7 +30,7 @@ func NewConfig() *Config {
 			ApiKey: os.Getenv("AC_MARKETPLACE_API_KEY"),
 		},
 		Auth0: Auth0{
-			JwtSecret: os.Getenv("AUTH0_JWT_SECRET"),
+			PublicCertificate: os.Getenv("AUTH0_PUBLIC_CERTIFICATE"),
 		},
 		InternalConfig: InternalConfig{
 			Environment: os.Getenv("ENVIRONMENT"),
