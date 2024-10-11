@@ -1,0 +1,8 @@
+Resources:
+  WhitelistIPsParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties: 
+      Name: "/atende/whitelist-ips"
+      Description: "Whitelist IPs for the application"
+      Type: "SecureString"
+      Value: ${file(../../env_settings.yml):config.${self:provider.stage}.ipWhitelist}

@@ -9,8 +9,11 @@ config:
         - execute-api:/*/*/*
       Condition:
         IpAddress:
-          aws:SourceIp: ${self:custom.ipWhitelist}
+          aws:SourceIp: ${file(../../env_settings.yml):config.${self:provider.stage}.ipWhitelist}
   dev:
+    ipWhitelist:
+      - 177.139.195.176
+      - 177.8.173.155
     awsVPC:
       securityGroupIds:
         - sg-04dc50d2c69bd6c2b
@@ -19,6 +22,9 @@ config:
         - "subnet-0b5d1ab0feabab643"
         - "subnet-057dbc88deead906f"
   prd:
+    ipWhitelist:
+      - 177.139.195.176
+      - 177.8.173.155
     awsVPC:
       securityGroupIds:
         - sg-073181ddfcba109a1

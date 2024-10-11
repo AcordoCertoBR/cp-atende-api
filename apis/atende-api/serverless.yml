@@ -73,9 +73,6 @@ package:
 
 custom:
   this: cp-atende-api-${self:provider.stage}
-  ipWhitelist: 
-    - 177.139.195.176
-    - 177.8.173.155
   #ddEnabled:
   #  dev: false
   #  prd: true
@@ -119,3 +116,6 @@ functions:
           path: /customer/{document}
           method: get
           cors: true
+
+resources:
+  - ${file(./serverless-resources.yml)}
