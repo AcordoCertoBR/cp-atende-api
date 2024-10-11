@@ -4,5 +4,5 @@ Resources:
     Properties: 
       Name: "/atende/whitelist-ips"
       Description: "Whitelist IPs for the application"
-      Type: "SecureString"
+      Type: "StringList"
       Value: ${file(../../env_settings.yml):config.${self:provider.stage}.ipWhitelist}
