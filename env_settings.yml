@@ -14,7 +14,7 @@ config:
     ipWhitelist:
       - 177.139.195.176
       - 177.8.173.155
-    ipWhitelistAC: "177.139.195.176,177.8.173.155"
+
     awsVPC:
       securityGroupIds:
         - sg-04dc50d2c69bd6c2b
@@ -26,7 +26,6 @@ config:
     ipWhitelist:
       - 177.139.195.176
       - 177.8.173.155
-    ipWhitelistAC: "177.139.195.176,177.8.173.155"
     awsVPC:
       securityGroupIds:
         - sg-073181ddfcba109a1
