@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -18,7 +19,7 @@ type UserClaims struct {
 
 type Claims struct {
 	User UserClaims `json:"user"`
-	Exp  int        `json:"exp"`
+	Exp  int64      `json:"exp"`
 }
 
 func ValidateJWT(tokenString string, publicKey string) (claims Claims, err error) {
@@ -43,17 +44,22 @@ func ValidateJWT(tokenString string, publicKey string) (claims Claims, err error
 		return claims, fmt.Errorf("error parsing token: %v", err)
 	}
 
-	// Validate the token
-	if tokenClaims, ok := token.Claims.(jwt.MapClaims); !ok && !token.Valid {
-		claims = convertClaims(tokenClaims)
-
+	// Validate Token
+	tokenClaims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
 		return claims, errors.New("invalid token")
+	}
+
+	claims = getClaims(tokenClaims)
+
+	if claims.Exp == 0 || claims.Exp < time.Now().Unix() {
+		return claims, errors.New("token expired")
 	}
 
 	return claims, nil
 }
 
-func convertClaims(tokenClaims map[string]interface{}) Claims {
+func getClaims(tokenClaims map[string]interface{}) Claims {
 	user, ok := tokenClaims["user"].(map[string]interface{})
 	if !ok {
 		return Claims{}
@@ -84,7 +90,7 @@ func convertClaims(tokenClaims map[string]interface{}) Claims {
 		nickName = ""
 	}
 
-	exp, ok := tokenClaims["exp"].(int)
+	exp, ok := tokenClaims["exp"].(int64)
 	if !ok {
 		exp = 0
 	}
