@@ -15,7 +15,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-var ACMarketplace *acmarketplace.ACMarketplace
+var acMarketplace *acmarketplace.ACMarketplace
 var cfg *config.Config
 var httpClient *httpUtils.Http
 
@@ -28,14 +28,9 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 	logger.SetupLogger(cfg)
 
 	token := req.Headers["Authorization"]
-	valid, err := auth.ValidateJWT(token, cfg.Auth0.PublicCertificate)
+	_, err = auth.ValidateJWT(token, cfg.Auth0.PublicCertificate)
 	if err != nil {
 		slog.Error(err.Error())
-		return httpUtils.UnauthorizedResponse(), nil
-	}
-
-	if !valid {
-		slog.Error("Invalid token")
 		return httpUtils.UnauthorizedResponse(), nil
 	}
 
@@ -45,7 +40,7 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 		return httpUtils.ValidationError("document is required"), nil
 	}
 
-	customerSvc := service.NewGetCustomerService(ACMarketplace)
+	customerSvc := service.NewGetCustomerService(acMarketplace)
 
 	response, err := customerSvc.GetCustomer(document)
 	if err != nil {
@@ -67,7 +62,7 @@ func initDependencies() (err error) {
 
 	httpClient = httpUtils.New("cp-atende-api", 10)
 
-	ACMarketplace = acmarketplace.NewACMarkeplace(httpClient, cfg)
+	acMarketplace = acmarketplace.NewACMarkeplace(httpClient, cfg)
 
 	return nil
 }
