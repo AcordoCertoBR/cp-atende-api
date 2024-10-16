@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -52,9 +51,9 @@ func ValidateJWT(tokenString string, publicKey string) (claims Claims, err error
 
 	claims = getClaims(tokenClaims)
 
-	if claims.Exp == 0 || claims.Exp < time.Now().Unix() {
-		return claims, errors.New("token expired")
-	}
+	//if claims.Exp == 0 || claims.Exp < time.Now().Unix() {
+	//	return claims, errors.New("token expired")
+	//}
 
 	return claims, nil
 }
