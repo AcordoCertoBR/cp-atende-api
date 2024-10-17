@@ -23,8 +23,8 @@ provider:
     name: ${self:custom.deploymentBucket.${self:provider.stage}}
   logs:
     restApi: true
-  apiGateway:
-    resourcePolicy: ${file(../../env_settings.yml):config.resourcePolicy}
+  #apiGateway:
+  #  resourcePolicy: ${file(../../env_settings.yml):config.resourcePolicy}
 
   environment:
     LOG_LEVEL: ${self:custom.LogLevel.${self:provider.stage}}
