@@ -18,6 +18,7 @@ type UserClaims struct {
 
 type Claims struct {
 	User UserClaims `json:"user"`
+	Sub  string     `json:"sub"`
 	Exp  int64      `json:"exp"`
 }
 

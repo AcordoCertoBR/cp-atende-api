@@ -9,6 +9,7 @@ import (
 	"github.com/AcordoCertoBR/cp-atende-api/libs/config"
 	httpUtils "github.com/AcordoCertoBR/cp-atende-api/libs/http"
 	"github.com/AcordoCertoBR/cp-atende-api/libs/logger"
+	"github.com/AcordoCertoBR/streamsurfer"
 
 	"github.com/AcordoCertoBR/cp-atende-api/libs/acmarketplace"
 	"github.com/aws/aws-lambda-go/events"
@@ -26,12 +27,36 @@ TODO:
 */
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events.APIGatewayProxyResponse, err error) {
 	logger.SetupLogger(cfg)
+	queue, err := streamsurfer.New("cp-atende-audit-stream")
+	if err != nil {
+		slog.Error("Error creating KinesisQueue", "error", err)
+		return
+	}
+
+	defer func() {
+		_, err := queue.Flush()
+		if err != nil {
+			slog.Error("Error flushing queue", "error", err)
+		}
+	}()
 
 	token := req.Headers["Authorization"]
-	_, err = auth.ValidateJWT(token, cfg.Auth0.PublicCertificate)
+	claims, err := auth.ValidateJWT(token, cfg.Auth0.PublicCertificate)
 	if err != nil {
 		slog.Error(err.Error())
 		return httpUtils.UnauthorizedResponse(), nil
+	}
+
+	data := map[string]interface{}{
+		"event":    "atende.GetCustomer.v1",
+		"ip":       req.RequestContext.Identity.SourceIP,
+		"action":   "get-customer",
+		"operator": claims.Sub,
+	}
+	err = queue.Enqueue(data)
+	if err != nil {
+		slog.Error("Error enqueuing data", "error", err)
+		return
 	}
 
 	document := req.PathParameters["document"]
