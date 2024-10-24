@@ -18,6 +18,7 @@ type UserClaims struct {
 
 type Claims struct {
 	User UserClaims `json:"user"`
+	Sub  string     `json:"sub"`
 	Exp  int64      `json:"exp"`
 }
 
@@ -94,6 +95,11 @@ func getClaims(tokenClaims map[string]interface{}) Claims {
 		exp = 0
 	}
 
+	sub, ok := tokenClaims["sub"].(string)
+	if !ok {
+		sub = ""
+	}
+
 	userClaims := UserClaims{
 		Avatar:        avatar,
 		Email:         email,
@@ -105,5 +111,6 @@ func getClaims(tokenClaims map[string]interface{}) Claims {
 	return Claims{
 		User: userClaims,
 		Exp:  exp,
+		Sub:  sub,
 	}
 }
