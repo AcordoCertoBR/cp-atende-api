@@ -27,7 +27,7 @@ TODO:
 */
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events.APIGatewayProxyResponse, err error) {
 	logger.SetupLogger(cfg)
-	queue, err := streamsurfer.New("cp-atende-audit-stream")
+	queue, err := streamsurfer.New("atende-audit-stream")
 	if err != nil {
 		slog.Error("Error creating KinesisQueue", "error", err)
 		return
