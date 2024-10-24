@@ -48,10 +48,11 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (res events
 	}
 
 	data := map[string]interface{}{
-		"event":    "atende.GetCustomer.v1",
-		"ip":       req.RequestContext.Identity.SourceIP,
-		"action":   "get-customer",
-		"operator": claims.Sub,
+		"event":          "atende.GetCustomer.v1",
+		"ip":             req.RequestContext.Identity.SourceIP,
+		"action":         "get-customer",
+		"operator":       claims.Sub,
+		"operator-email": claims.User.Email,
 	}
 	err = queue.Enqueue(data)
 	if err != nil {
